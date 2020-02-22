@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{logochum}[2019/03/23 Logo du Centre hospitalier de l'Université de Montréal]
+\ProvidesPackage{logochum}[2019/03/23 Logo du Centre hospitalier de lUniversite de Montreal]
 
 \RequirePackage{xcolor}
 \RequirePackage{tikz}
@@ -358,62 +358,55 @@
   (5.8457,66.6021) and (5.1070,67.2146) .. (5.1070,68.3009) -- (5.1070,68.3139)
   .. controls (5.1070,69.4001) and (5.8607,70.0151) .. (6.6282,70.0151)}
 
-\providecommand{\logochum}{%
-	\begin{tikzpicture}[y=0.80pt, x=0.80pt, yscale=-1.000000, xscale=1.000000, inner sep=0pt, outer sep=0pt]
-		\path[fill=bleumoyenchum,nonzero rule] \LogoCHUMPath;
-		\path[fill=bleufoncechum,nonzero rule] \CHUMPath;
-		\path[fill=bleufoncechum,nonzero rule] \CentreBlablablaPath;
-	\end{tikzpicture}
+\tikzset{
+		logo/.style={
+			y=1pt, x=1pt, 
+			yscale=-1.000000, 
+			xscale=1.000000, 
+			inner sep=0pt,
+			outer sep=0pt,
+		}
 }
 
-\providecommand{\logochumsimple}{%
-	\begin{tikzpicture}[y=0.80pt, x=0.80pt, yscale=-1.000000, xscale=1.000000, inner sep=0pt, outer sep=0pt]
-		\path[fill=bleumoyenchum,nonzero rule] \LogoCHUMPath;
-		\path[fill=bleufoncechum,nonzero rule] \CHUMPath;
-	\end{tikzpicture}
+\pgfkeys{
+	/logochum/.cd, 
+	denomination/.is if=denomination,
+	width/.store in=\logochumwidth,
+	height/.store in=\logochumheight,
+	noir/.code={},
+	bleu/.style={
+		/tikz/color1/.style=bleumoyenchum,
+		/tikz/color2/.style=bleufoncechum,
+	},
+	blanc/.style={
+		/tikz/color1/.style=white,
+		/tikz/color2/.style=white,
+	},
 }
 
-\providecommand{\logochumalt}{%
-	\begin{tikzpicture}[y=0.80pt, x=0.80pt, yscale=-1.000000, xscale=1.000000, inner sep=0pt, outer sep=0pt]
-		\path[fill=c82b0e2,nonzero rule] \LogoCHUMPath;
-		\path[fill=c1063a5,nonzero rule] \CHUMPath;
-		\path[fill=c1063a5,nonzero rule] \CentreBlablablaPath;
-	\end{tikzpicture}
-}
+\def\drawlogochum{%
+	\begin{tikzpicture}[logo]
+		\fill[color1] \LogoCHUMPath;
+		\fill[color2] \CHUMPath;
+		\ifdenomination
+		\fill[color2] \CentreBlablablaPath;
+		\fi
+	\end{tikzpicture}}
+%%%%%%%%%%%%%%%%%%%
+%% User commands %%
+%%%%%%%%%%%%%%%%%%%
 
-\providecommand{\logochumsimplealt}{%
-	\begin{tikzpicture}[y=0.80pt, x=0.80pt, yscale=-1.000000, xscale=1.000000, inner sep=0pt, outer sep=0pt]
-		\path[fill=c82b0e2,nonzero rule] \LogoCHUMPath;
-		\path[fill=c1063a5,nonzero rule] \CHUMPath;
-	\end{tikzpicture}
-}
-
-\providecommand{\logochumnoir}{%
-	\begin{tikzpicture}[y=0.80pt, x=0.80pt, yscale=-1.000000, xscale=1.000000, inner sep=0pt, outer sep=0pt]
-		\path[fill=black,nonzero rule] \LogoCHUMPath;
-		\path[fill=black,nonzero rule] \CHUMPath;
-		\path[fill=black,nonzero rule] \CentreBlablablaPath;
-	\end{tikzpicture}
-}
-
-\providecommand{\logochumsimplenoir}{%
-	\begin{tikzpicture}[y=0.80pt, x=0.80pt, yscale=-1.000000, xscale=1.000000, inner sep=0pt, outer sep=0pt]
-		\path[fill=black,nonzero rule] \LogoCHUMPath;
-		\path[fill=black,nonzero rule] \CHUMPath;
-	\end{tikzpicture}
-}
-
-\providecommand{\logochumblanc}{%
-	\begin{tikzpicture}[y=0.80pt, x=0.80pt, yscale=-1.000000, xscale=1.000000, inner sep=0pt, outer sep=0pt]
-		\path[fill=white,nonzero rule] \LogoCHUMPath;
-		\path[fill=white,nonzero rule] \CHUMPath;
-		\path[fill=white,nonzero rule] \CentreBlablablaPath;
-	\end{tikzpicture}
-}
-
-\providecommand{\logochumsimpleblanc}{%
-	\begin{tikzpicture}[y=0.80pt, x=0.80pt, yscale=-1.000000, xscale=1.000000, inner sep=0pt, outer sep=0pt]
-		\path[fill=white,nonzero rule] \LogoCHUMPath;
-		\path[fill=white,nonzero rule] \CHUMPath;
-	\end{tikzpicture}
+\providecommand{\logochum}[1][]{%
+	\newif\ifdenomination%
+	\def\logochumwidth{2.5cm}%
+	\tikzset{
+			color1/.style=black,
+			color2/.style=black,
+		}%
+	\pgfkeys{/logochum/.cd, #1}%
+	\@ifundefined{logochumheight}{%
+		\resizebox{\logochumwidth}{!}{\drawlogochum}
+	}{%
+		\resizebox{!}{\logochumheight}{\drawlogochum}%
+	}%
 }

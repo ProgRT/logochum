@@ -2,7 +2,7 @@
 
 test: test.pdf
 
-test.pdf: test.tex logochum.sty
+test.pdf: test.tex logochum2.sty
 	pdflatex test
 
 clean:
